@@ -299,6 +299,11 @@ a:hover {
     font-size: 0.94rem;
 }
 
+.role li strong {
+    color: var(--ink);
+    font-weight: 700;
+}
+
 .role li + li {
     margin-top: 0.55rem;
 }
@@ -385,25 +390,28 @@ a:hover {
 .contact-note {
     color: var(--muted);
     font-size: 0.95rem;
-    margin-bottom: 0.65rem;
+    margin-bottom: 0.55rem;
 }
 
 .contact-line {
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(1.5rem, 3.8vw, 2.2rem);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+    font-family: var(--type);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0;
+    line-height: 1.5;
 }
 
 .contact-line a {
     text-decoration: none;
-    border-bottom: 1px solid var(--line);
-    transition: border-color 0.2s ease, color 0.2s ease;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 0.08rem;
+    color: var(--ink);
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .contact-line a:hover {
+    color: var(--accent);
     border-bottom-color: var(--accent);
 }
 
