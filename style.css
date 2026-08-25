@@ -1,16 +1,16 @@
 :root {
-    --ink: #0c1219;
-    --ink-soft: #2a3441;
-    --muted: #5c6b7a;
-    --line: #c5ced8;
-    --surface: #e8eef4;
-    --surface-2: #dce5ee;
-    --accent: #0a5cff;
-    /* Mobile-first: tight shell; desktop overrides widen it */
+    --ink: #2a1c22;
+    --ink-soft: #4a3840;
+    --muted: #8a717a;
+    --line: #e0d0d6;
+    --surface: #f3ebe8;
+    --surface-deep: #ebe0e4;
+    --accent: #b34e6a;
+    --gold: #c8965a;
     --max: 100%;
     --pad: 1rem;
-    --type: "IBM Plex Sans", "Segoe UI", sans-serif;
-    --display: Syne, "Arial Narrow", sans-serif;
+    --type: Figtree, "Helvetica Neue", sans-serif;
+    --display: "Cormorant Garamond", Georgia, serif;
 }
 
 *,
@@ -28,22 +28,33 @@ html {
 
 body {
     font-family: var(--type);
-    font-size: clamp(0.98rem, 0.94rem + 0.2vw, 1.05rem);
+    font-size: clamp(0.98rem, 0.94rem + 0.2vw, 1.06rem);
     line-height: 1.65;
     color: var(--ink);
-    background-color: var(--surface);
-    background-image:
-        linear-gradient(160deg, rgba(10, 92, 255, 0.07) 0%, transparent 42%),
-        repeating-linear-gradient(
-            -12deg,
-            transparent,
-            transparent 11px,
-            rgba(12, 18, 25, 0.025) 11px,
-            rgba(12, 18, 25, 0.025) 12px
-        ),
-        linear-gradient(180deg, #f1f5f9 0%, var(--surface) 35%, var(--surface-2) 100%);
-    background-attachment: fixed;
+    background: var(--surface);
     min-height: 100vh;
+    position: relative;
+}
+
+.atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 50% at 12% 0%, rgba(179, 78, 106, 0.16), transparent 55%),
+        radial-gradient(ellipse 55% 45% at 95% 8%, rgba(200, 150, 90, 0.18), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 70% 100%, rgba(140, 120, 160, 0.1), transparent 55%),
+        linear-gradient(165deg, #f7f0ed 0%, var(--surface) 40%, var(--surface-deep) 100%);
+}
+
+.atmosphere::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
 }
 
 a {
@@ -55,56 +66,53 @@ a:hover {
 }
 
 .page {
-    width: var(--max);
-    max-width: 100%;
-    margin: 0 auto;
+    width: min(var(--max), 100%);
+    margin-inline: auto;
     padding: 0 var(--pad) clamp(2.5rem, 6vw, 4.5rem);
 }
 
-/* Tablet: still compact */
 @media (min-width: 640px) {
     :root {
-        --pad: 1.35rem;
-        --max: min(36rem, 92vw);
+        --pad: 1.5rem;
+        --max: 36rem;
     }
 }
 
-/* Large tablet / small laptop */
 @media (min-width: 900px) {
     :root {
         --pad: 2rem;
-        --max: min(52rem, 90vw);
+        --max: 54rem;
     }
 }
 
-/* Desktop: use the screen */
 @media (min-width: 1100px) {
     :root {
-        --pad: clamp(2rem, 4vw, 3.5rem);
-        --max: min(72rem, 92vw);
+        --pad: 2.5rem;
+        --max: 68rem;
     }
 }
 
 @media (min-width: 1400px) {
     :root {
-        --max: min(80rem, 88vw);
+        --pad: 3rem;
+        --max: 76rem;
     }
 }
 
 .site-header {
     width: 100%;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
     position: sticky;
     top: 0;
     z-index: 5;
-    background: color-mix(in srgb, var(--surface) 92%, transparent);
-    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--surface) 78%, transparent);
+    backdrop-filter: blur(12px);
 }
 
 .site-header-inner {
-    width: 100%;
-    margin: 0;
-    padding: clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 4vw, 3.5rem);
+    width: min(var(--max), 100%);
+    margin-inline: auto;
+    padding: clamp(1rem, 2.5vw, 1.4rem) var(--pad);
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -113,20 +121,22 @@ a:hover {
 
 .wordmark {
     font-family: var(--display);
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: -0.04em;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.45rem;
+    letter-spacing: -0.01em;
     text-decoration: none;
+    color: var(--ink);
 }
 
 .nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 0.55rem 1rem;
-    font-size: 0.75rem;
+    gap: 0.55rem 1.1rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
@@ -136,55 +146,68 @@ a:hover {
 }
 
 .nav a:hover {
-    color: var(--ink);
+    color: var(--accent);
 }
 
 .hero {
-    padding: clamp(2.5rem, 8vw, 4.75rem) 0 clamp(2rem, 5vw, 3rem);
-    animation: rise 0.65s ease both;
+    text-align: center;
+    padding: clamp(2rem, 6vw, 3.5rem) 0 clamp(1.75rem, 4vw, 2.75rem);
+    animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-kicker {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.55rem;
 }
 
 .hero-name {
     font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(2.75rem, 8vw + 1rem, 6.5rem);
-    line-height: 0.9;
-    letter-spacing: -0.045em;
+    font-weight: 600;
+    font-size: clamp(2.8rem, 8vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
     color: var(--ink);
-    max-width: 12ch;
+}
+
+.hero-name em {
+    font-style: italic;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--ink) 78%, var(--accent));
 }
 
 .hero-line {
-    margin-top: clamp(1.2rem, 3vw, 1.6rem);
-    max-width: 48rem;
+    margin: 1.1rem auto 0;
+    max-width: 40rem;
     color: var(--ink-soft);
-    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
-    line-height: 1.55;
+    font-size: clamp(1.02rem, 0.96rem + 0.3vw, 1.15rem);
+    line-height: 1.6;
 }
 
 .hero-cta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem 1.35rem;
-    margin-top: 1.6rem;
+    justify-content: center;
+    gap: 0.75rem 1.4rem;
+    margin-top: 1.35rem;
+}
+
+.education-line {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
 }
 
 .link-action {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     text-decoration: none;
     border-bottom: 1.5px solid currentColor;
-    padding-bottom: 0.08rem;
+    padding-bottom: 0.1rem;
     color: var(--ink);
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .link-action.muted {
@@ -200,21 +223,22 @@ a:hover {
 
 .block {
     display: grid;
-    grid-template-columns: minmax(6rem, 8rem) minmax(0, 1fr);
-    gap: 0.5rem clamp(1.25rem, 3vw, 2.5rem);
-    padding: clamp(1.5rem, 3.5vw, 2.5rem) 0;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    padding: clamp(1.6rem, 3.5vw, 2.5rem) 0;
     border-top: 1px solid var(--line);
-    animation: rise 0.65s ease both;
-    animation-delay: 0.06s;
+    animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.08s;
 }
 
 .block-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding-top: 0.25rem;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--accent);
 }
 
 .block-body {
@@ -222,11 +246,12 @@ a:hover {
 }
 
 .prose p + p {
-    margin-top: 0.85rem;
+    margin-top: 0.95rem;
 }
 
 .prose p {
     color: var(--ink-soft);
+    max-width: none;
 }
 
 .role + .role {
@@ -241,11 +266,11 @@ a:hover {
     align-items: baseline;
     justify-content: space-between;
     gap: 0.25rem 1rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.8rem;
 }
 
 .role-head h3 {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: -0.015em;
 }
@@ -253,7 +278,7 @@ a:hover {
 .role-place {
     color: var(--muted);
     font-size: 0.9rem;
-    margin-top: 0.1rem;
+    margin-top: 0.15rem;
 }
 
 .role-head time {
@@ -269,9 +294,9 @@ a:hover {
 
 .role li {
     position: relative;
-    padding-left: 0.9rem;
+    padding-left: 0.95rem;
     color: var(--ink-soft);
-    font-size: 0.92rem;
+    font-size: 0.94rem;
 }
 
 .role li + li {
@@ -282,10 +307,11 @@ a:hover {
     content: "";
     position: absolute;
     left: 0;
-    top: 0.62em;
-    width: 0.3rem;
-    height: 0.3rem;
-    background: var(--accent);
+    top: 0.65em;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
 }
 
 .project-list {
@@ -297,11 +323,11 @@ a:hover {
     grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) auto;
     gap: 0.4rem 1.25rem;
     align-items: baseline;
-    padding: 0.95rem 0;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.18s ease;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .project-list li:first-child .project-row {
@@ -310,18 +336,19 @@ a:hover {
 
 .project-row:hover {
     color: var(--accent);
-    transform: translateX(2px);
+    transform: translateX(4px);
 }
 
 .project-title {
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    font-size: 1rem;
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
 }
 
 .project-desc {
     color: var(--muted);
-    font-size: 0.88rem;
+    font-size: 0.9rem;
 }
 
 .project-row:hover .project-desc {
@@ -329,41 +356,51 @@ a:hover {
 }
 
 .project-go {
-    color: var(--muted);
-    font-size: 0.9rem;
+    color: var(--gold);
+    font-size: 1.05rem;
 }
 
 .skill-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem 2rem;
+    gap: 1.35rem 2rem;
 }
 
 .skill-grid h3 {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--accent);
     margin-bottom: 0.3rem;
 }
 
 .skill-grid p {
     color: var(--ink-soft);
-    font-size: 0.92rem;
+    font-size: 0.94rem;
+}
+
+.contact-note {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.65rem;
 }
 
 .contact-line {
     font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(1.35rem, 3.5vw, 1.85rem);
-    letter-spacing: -0.03em;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+    letter-spacing: -0.02em;
     line-height: 1.2;
 }
 
 .contact-line a {
     text-decoration: none;
     border-bottom: 1px solid var(--line);
+    transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .contact-line a:hover {
@@ -381,7 +418,7 @@ a:hover {
 @keyframes rise {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(12px);
     }
     to {
         opacity: 1;
@@ -389,7 +426,6 @@ a:hover {
     }
 }
 
-/* Mobile + tablet: stack sections, keep content narrow */
 @media (max-width: 899px) {
     .site-header-inner {
         flex-direction: column;
@@ -400,11 +436,6 @@ a:hover {
     .nav {
         justify-content: flex-start;
         gap: 0.5rem 0.85rem;
-    }
-
-    .block {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
     }
 
     .skill-grid {
@@ -426,7 +457,7 @@ a:hover {
     }
 
     .hero-name {
-        font-size: clamp(2.4rem, 14vw, 3.75rem);
+        font-size: clamp(2.5rem, 12vw, 3.6rem);
     }
 
     .hero-line {
